@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AnggotaValidateMail;
 use App\Models\AnggotaModel;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AnggotaController extends Controller
 {
@@ -84,6 +86,10 @@ class AnggotaController extends Controller
         $anggota = AnggotaModel::findOrFail($id);
         $anggota->status_anggota = $request->status_anggota;
         $anggota->save();
+
+        // Kirim Email Pemberitahuan
+        Mail::to($anggota->user->email)->send(new AnggotaValidateMail($anggota));
+
         notify()->success('Anggota berhasil divalidasi.');
         return redirect()->back();
     }
@@ -101,6 +107,10 @@ class AnggotaController extends Controller
     public function downloadKTA()
     {
         $anggota = Auth::user()->anggota;
+        if ($anggota->status_anggota !== 'aktif') {
+            return redirect()->back()->with('error', 'Kartu Tanda Anggota hanya dapat diunduh oleh anggota yang sudah aktif.');
+        }
+
         $data = [
             'foto' => $anggota->foto ?? 'foto.jpg', // ganti sesuai nama file foto
             'nama_anggota' => $anggota->nama_anggota,
