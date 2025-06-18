@@ -17,8 +17,11 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    protected $table = 'users';
+    protected $primaryKey = 'id_user';
     protected $fillable = [
-        'name',
+        'role',
         'email',
         'password',
     ];
@@ -44,5 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user that owns the Anggota.
+     */
+    public function anggota()
+    {
+        return $this->hasOne(AnggotaModel::class, 'id_user', 'id_user');
     }
 }

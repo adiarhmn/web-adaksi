@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('anggota', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_anggota');
+            $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->string('nama_anggota', 100);
+            $table->string('nip_nipppk', 100);
+            $table->string('no_hp', 100);
+            $table->string('status_dosen', 50)->nullable();
+            $table->string('homebase_pt', 100)->nullable();
+            $table->string('provinsi', 100)->nullable();
+            $table->string('foto', 255)->nullable();
+            $table->enum('status_anggota', ['pending', 'aktif', 'nonaktif'])->default('pending');
+            $table->string('bukti_tf_pendaftaran', 255)->nullable();
             $table->timestamps();
         });
     }

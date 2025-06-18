@@ -3,7 +3,6 @@
 $main_data = 'Anggota';
 $url = '/admin/anggota';
 ?>
-
 @section('title', $main_data)
 @section('content')
     <div class="container-fluid">
@@ -18,6 +17,11 @@ $url = '/admin/anggota';
                 <ol class="breadcrumb m-0 py-0">
                     <li class="breadcrumb-item">
                         <a href="{{ url($url) }}">
+                            Pengguna
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ url($url) }}">
                             {{ $main_data }}
                         </a>
                     </li>
@@ -26,94 +30,246 @@ $url = '/admin/anggota';
         </div>
 
         <div class="row">
-            <div class="col-12">
-                <div class="card">
+
+            <div class="col-md-12">
+                <div class="card overflow-hidden">
                     <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-md-flex align-items-center">
                             <div>
-                                <h5 class="card-title mb-0 fw-bold">Daftar
-                                    {{ $main_data }}
-                                </h5>
-                                <p class="card-text text-muted">Berikut adalah daftar {{ $main_data }} yang terdaftar di
+                                <h5 class="card-title mb-1">Daftar Anggota</h5>
+                                <p class="card-text text-muted mb-0">Berikut adalah daftar anggota yang terdaftar dalam
                                     sistem.</p>
                             </div>
-                            <div class="card-tools">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="ri-add-line align-bottom me-1"></i> Tambah
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="{{ url($url . '/tambah') }}">Tambah
-                                            {{ $main_data }}</a>
-                                        <a class="dropdown-item" href="{{ url($url . '/import') }}">Import
-                                            {{ $main_data }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="filter">
-                            <form class="d-flex align-items-center mt-3 gap-2">
+                            <form class="d-flex flex-stack flex-wrap gap-1 justify-content-md-end ms-auto">
+                                {{-- Selection Status --}}
+                                <select name="status_anggota"
+                                    class="form-select form-select-sm bg-light-subtle border fw-medium me-2"
+                                    style="width: auto;">
+                                    <option value="">All Status</option>
+                                    <option value="aktif" {{ request('status_anggota') == 'aktif' ? 'selected' : '' }}>
+                                        Aktif</option>
+                                    <option value="pending" {{ request('status_anggota') == 'pending' ? 'selected' : '' }}>
+                                        Pending</option>
+                                    <option value="nonaktif"
+                                        {{ request('status_anggota') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                                </select>
 
-                                <div>
-                                    <input type="text" class="form-control" placeholder="Filter {{ $main_data }}"
-                                        aria-label="Filter {{ $main_data }}">
+                                {{-- <select class="form-select form-select-sm bg-light-subtle border fw-medium me-2"
+                                    style="width: auto;">
+                                    <option selected>All Status Dosen</option>
+                                </select> --}}
+                                <div class="position-relative topbar-search">
+                                    <input name="search" type="text"
+                                        class="form-control bg-light-subtle ps-4 py-1 border fs-14" placeholder="Search..."
+                                        value="{{ request('search') }}">
+                                    <i
+                                        class="mdi mdi-magnify fs-16 position-absolute text-dark top-50 translate-middle-y ms-2"></i>
                                 </div>
-                                <button class="btn btn-primary" type="submit">
-                                    Filter
+                                {{-- Filter --}}
+                                <button type="submit"
+                                    class="btn btn-outline-info btn-sm d-flex align-items-center gap-1 ms-2">
+                                    <i class="mdi mdi-filter"></i> Filter
                                 </button>
+
+                                <a href="{{ url($url . '/create') }}"
+                                    class="btn btn-primary btn-sm d-flex align-items-center gap-1 ms-2">
+                                    <i class="mdi mdi-plus"></i> Tambah Anggota
+                                </a>
                             </form>
                         </div>
-                    </div><!-- end card header -->
+                    </div>
 
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table mb-2 border-b">
+                            <table class="table table-traffic mb-0">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nama Lengkap</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">NIP/NIPPPK</th>
-                                        <th scope="col">NO HP/WA</th>
-                                        <th scope="col">Status Dosen</th>
-                                        <th scope="col">Homebase PT</th>
-                                        <th scope="col">Provinsi</th>
-                                        <th scope="col">Foto</th>
-                                        <th scope="col">Status Anggota</th>
-                                        <th scope="col">Aksi</th>
+                                        <th>No</th>
+                                        <th>Nama Anggota</th>
+                                        <th>NIP/NIPPPK</th>
+                                        <th>No HP</th>
+                                        <th>Status Dosen</th>
+                                        <th>Homebase PT</th>
+                                        <th>Status Anggota</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                    </tr>
+                                    @foreach ($anggota as $key => $data)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td class="d-flex align-items-center">
+                                                <img src="assets/images/users/user-12.jpg"
+                                                    class="avatar avatar-sm rounded-circle me-3">
+                                                <div>
+                                                    <p class="mb-0 fw-medium fs-14">
+                                                        {{ $data->nama_anggota }}
+                                                    </p>
+                                                    <p class="text-muted fs-13 mb-0">{{ $data->user->email }}</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-muted">
+                                                    {{ $data->nip_nipppk }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-muted">{{ $data->no_hp }}</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-muted">{{ $data->status_dosen }}</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-muted">{{ $data->homebase_pt }}</p>
+                                            </td>
+                                            <td>
+                                                @if ($data->status_anggota == 'aktif')
+                                                    <span
+                                                        class="badge bg-primary-subtle text-primary fw-semibold text-uppercase">
+                                                        {{ $data->status_anggota }}
+                                                    </span>
+                                                @elseif ($data->status_anggota == 'nonaktif')
+                                                    <span
+                                                        class="badge bg-danger-subtle text-danger fw-semibold text-uppercase">{{ $data->status_anggota }}</span
+                                                @else
+                                                    <span
+                                                        class="badge bg-warning-subtle text-warning fw-semibold text-uppercase">{{ $data->status_anggota }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($data->status_anggota == 'pending')
+                                                    <!-- Tombol Validasi -->
+                                                    <button type="button" aria-label="anchor"
+                                                        class="btn btn-icon btn-sm bg-info-subtle me-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalValidasi{{ $data->id_anggota }}"
+                                                        data-bs-original-title="Validasi">
+                                                        <i class="mdi mdi-check-decagram-outline fs-14 text-info"></i>
+                                                    </button>
+                                                    <!-- Modal Validasi -->
+                                                    <div class="modal fade" id="modalValidasi{{ $data->id_anggota }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="modalValidasiLabel{{ $data->id_anggota }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <form
+                                                                action="{{ url($url . '/validasi/' . $data->id_anggota) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="modalValidasiLabel{{ $data->id_anggota }}">
+                                                                            Validasi Anggota
+                                                                        </h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Apakah Anda yakin ingin memvalidasi anggota
+                                                                            <strong>{{ $data->nama_anggota }}</strong>?
+                                                                        </p>
+                                                                        <div class="mb-3 w-100">
+                                                                            <label class="form-label">Bukti Transfer
+                                                                                :</label>
+                                                                            <a href="{{ asset('uploads/bukti_tf_pendaftaran/' . $data->bukti_tf_pendaftaran) }}"
+                                                                                target="_blank">Lihat Bukti Transfer</a>
+                                                                            @if ($data->bukti_tf_pendaftaran)
+                                                                                <div
+                                                                                    class="mb-2 d-flex justify-content-center">
+                                                                                    <img src="{{ asset('uploads/bukti_tf_pendaftaran/' . $data->bukti_tf_pendaftaran) }}"
+                                                                                        alt="Bukti Transfer"
+                                                                                        class="img-fluid rounded"
+                                                                                        style="max-width: 300px;">
+                                                                                </div>
+                                                                            @else
+                                                                                <p class="text-muted mb-2">Belum ada bukti
+                                                                                    transfer.</p>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label
+                                                                                for="status_anggota{{ $data->id_anggota }}"
+                                                                                class="form-label">Status Anggota</label>
+                                                                            <select class="form-select"
+                                                                                id="status_anggota{{ $data->id_anggota }}"
+                                                                                name="status_anggota" required>
+                                                                                <option value="aktif"
+                                                                                    {{ $data->status_anggota == 'aktif' ? 'selected' : '' }}>
+                                                                                    Aktif</option>
+                                                                                <option value="pending"
+                                                                                    {{ $data->status_anggota == 'pending' ? 'selected' : '' }}>
+                                                                                    Pending</option>
+                                                                                <option value="nonaktif"
+                                                                                    {{ $data->status_anggota == 'nonaktif' ? 'selected' : '' }}>
+                                                                                    Nonaktif</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-dark btn-sm"
+                                                                            data-bs-dismiss="modal">Batal</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary btn-sm">Validasi</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div aria-label="anchor"
+                                                        class="btn btn-icon btn-sm bg-primary-subtle me-1"
+                                                        data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                        <i class="mdi mdi-pencil-outline fs-14 text-primary"></i>
+                                                    </div>
+                                                    <a aria-label="anchor" class="btn btn-icon btn-sm bg-danger-subtle"
+                                                        data-bs-toggle="tooltip" data-bs-original-title="Delete">
+                                                        <i class="mdi mdi-delete fs-14 text-danger"></i>
+                                                    </a>
+                                                @endif
 
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
-
-                            {{-- Pagination --}}
-                            <ul class="pagination justify-content-end mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="javascript: void(0);" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript: void(0);">Next</a>
-                                </li>
-                            </ul>
                         </div>
+                    </div>
+
+                    <div class="card-footer pt-3 pb-0 border-top">
+                        {{ $anggota->links('vendor.pagination.bootstrap-5') }}
+                        {{-- <div class="row align-items-center">
+                            <div class="col-sm">
+                                <div class="text-block text-center text-sm-start">
+                                    <span class="fw-medium">1 of 3</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto mt-3 mt-sm-0">
+                                <div class="pagination gap-2 justify-content-center py-3 ps-0 pe-3">
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link me-2 rounded-2" href="javascript:void(0);"> Prev </a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link rounded-2 me-2" href="#" data-i="1"
+                                                data-page="5">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link me-2 rounded-2" href="#" data-i="2"
+                                                data-page="5">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link text-primary rounded-2" href="javascript:void(0);">Next
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

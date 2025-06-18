@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    @notifyCss
 
     <style>
         body {
@@ -128,37 +129,76 @@
                                 sumber data untuk pencetakan KTA baik cetak maupun digital.</p>
                         </div>
 
-                        <form action="">
+                        <form action="{{ url('anggota/daftar') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            {{-- Nama Lengkap --}}
                             <div class="mb-3">
                                 <label for="nama" class="form-label m-0">Nama Lengkap</label>
-                                <p class="text-muted mb-1" style="font-size: 0.775rem;">Nama Lengkap dengan gelar. Pastika
+                                <p class="text-muted mb-1" style="font-size: 0.775rem;">Nama Lengkap dengan gelar.
+                                    Pastika
                                     tidak ada kesalahan untuk di cetak di KTA</p>
-                                <input type="text" class="form-control" id="nama" name="nama"
-                                    placeholder="Masukkan nama lengkap Anda" required>
+                                <input type="text" class="form-control" id="nama" name="nama_anggota"
+                                    placeholder="Masukkan nama lengkap Anda">
                             </div>
 
+                            {{-- Email --}}
                             <div class="mb-3">
                                 <label for="email" class="form-label m-0">Email</label>
-                                <p class="text-muted mb-1" style="font-size: 0.775rem;">Email yang valid untuk pengiriman KTA digital</p>
+                                <p class="text-muted mb-1" style="font-size: 0.775rem;">Email yang valid untuk
+                                    pengiriman KTA digital</p>
                                 <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Masukkan email Anda" required>
+                                    placeholder="Masukkan email Anda">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="nip_nippk" class="form-label mb-1">NIP/NIPPPK</label>
-                                <input type="tel" class="form-control" id="nip_nippk" name="nip_nipppk"
-                                    placeholder="Masukkan NIP/NIPPPK Anda" required>
+                            <div class="row">
+                                {{-- NIP/NIPPPK --}}
+                                <div class="mb-3 col-md-6">
+                                    <label for="nip_nippk" class="form-label mb-1">NIP/NIPPPK</label>
+                                    <input type="tel" class="form-control" id="nip_nippk" name="nip_nipppk"
+                                        placeholder="Masukkan NIP/NIPPPK Anda">
+                                </div>
+
+                                {{-- Nomor HP / WA --}}
+                                <div class="mb-3 col-md-6">
+                                    <label for="no_hp" class="form-label mb-1">Nomor HP / WA</label>
+                                    <input type="tel" class="form-control" id="no_hp" name="no_hp"
+                                        placeholder="Masukkan nomor HP/WA Anda">
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="no_hp" class="form-label mb-1">Nomor HP / WA</label>
-                                <input type="tel" class="form-control" id="no_hp" name="no_hp"
-                                    placeholder="Masukkan nomor HP/WA Anda" required>
+                            <div class="row">
+                                {{-- Status Dosen --}}
+                                <div class="mb-3 col-md-6">
+                                    <label for="status_dosen" class="form-label mb-1">Status Dosen</label>
+                                    <select class="form-select" id="status_dosen" name="status_dosen">
+                                        <option value="" disabled selected>Pilih status dosen Anda</option>
+                                        <option value="ASN">ASN</option>
+                                        <option value="DPK">DPK</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+
+                                {{-- Homebase PT --}}
+                                <div class="mb-3 col-md-6">
+                                    <label for="homebase_pt" class="form-label mb-1">Homebase PT</label>
+                                    <input type="text" class="form-control" id="homebase_pt" name="homebase_pt"
+                                        placeholder="Masukkan nama PT Anda">
+                                </div>
                             </div>
 
+                            {{-- Provinsi --}}
                             <div class="mb-3">
-                                <label for="alamat" class="form-label mb-1">Alamat</label>
-                                <textarea class="form-control" id="alamat" name="alamat" placeholder="Masukkan alamat Anda" rows="3"></textarea>
+                                <label for="provinsi" class="form-label mb-1">Provinsi</label>
+                                <input type="text" class="form-control" id="provinsi" name="provinsi"
+                                    placeholder="Masukkan provinsi Anda">
+                            </div>
+
+                            {{-- Bukti Transfer --}}
+                            <div class="mb-3">
+                                <label for="bukti_transfer" class="form-label mb-1">Bukti Transfer</label>
+                                <input type="file" class="form-control" id="bukti_transfer"
+                                    name="bukti_transfer">
                             </div>
 
                             <button type="submit" class="btn btn-dark w-100">Daftar Anggota</button>
@@ -211,6 +251,8 @@
     <!-- App js-->
     <script src="{{ url('/') }}/assets-template/js/app.js"></script>
 
+    <x-notify::notify />
+    @notifyJs
 </body>
 
 </html>

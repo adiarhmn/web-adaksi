@@ -28,9 +28,9 @@
          </div>
      </li>
      <li>
-         <a href="apps-calendar.html" class="tp-link">
-             <i data-feather="calendar"></i>
-             <span> Kalender </span>
+         <a href="{{ url('admin/settings') }}" class="tp-link">
+                <i data-feather="settings"></i>
+                <span> Pengaturan </span>
          </a>
      </li>
  </ul>
