@@ -101,7 +101,7 @@ $url = '/admin/anggota';
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-12.jpg"
+                                                <img src="{{ asset('uploads/foto_anggota/' . ($data->foto ?? 'foto.jpg')) }}"
                                                     class="avatar avatar-sm rounded-circle me-3">
                                                 <div>
                                                     <p class="mb-0 fw-medium fs-14">
@@ -133,8 +133,7 @@ $url = '/admin/anggota';
                                                 @elseif ($data->status_anggota == 'nonaktif')
                                                     <span
                                                         class="badge bg-danger-subtle text-danger fw-semibold text-uppercase">{{ $data->status_anggota }}</span
-                                                @else
-                                                    <span
+                                                    @else <span
                                                         class="badge bg-warning-subtle text-warning fw-semibold text-uppercase">{{ $data->status_anggota }}</span>
                                                 @endif
                                             </td>
